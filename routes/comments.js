@@ -52,7 +52,7 @@ async function getTweets(conversation_id, next_token = "") {
 			id: _id,
 			text: _text,
 			username: _username,
-			profile_image_url = _profile_image_url
+			profile_image_url: _profile_image_url
 		})
 	}
 
