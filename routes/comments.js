@@ -39,33 +39,37 @@ async function getTweets(conversation_id, next_token = "") {
 		headers: {"Authorization": `Bearer ${process.env.REACT_APP_BEARER_TOKEN}`}
 	}
 
-	resData = await axios.get(`https://api.twitter.com/2/tweets/search/recent?max_results=10&user.fields=username${next_token}&query=conversation_id:${conversation_id}`, options)
-	.then(response => response)
-	.catch(error => console.log(error))
+	try {
+		resData = await axios.get(`https://api.twitter.com/2/tweets/search/recent?max_results=10&user.fields=username${next_token}&query=conversation_id:${conversation_id}`, options)
+		.then(response => response)
+		.catch(error => console.log(error))
 
-	for (var i = 0; i < resData.data.data.length; i++) {
-		_id = resData.data.data[i].id
-		_text = resData.data.data[i].text
-		_username = resData.data.includes.users[i].username
-		_profile_image_url = res.data.includes.users[i].profile_image_url
-		replies.push({
-			id: _id,
-			text: _text,
-			username: _username,
-			profile_image_url: _profile_image_url
-		})
+		for (var i = 0; i < resData.data.data.length; i++) {
+			_id = resData.data.data[i].id
+			_text = resData.data.data[i].text
+			_username = resData.data.includes.users[i].username
+			_profile_image_url = res.data.includes.users[i].profile_image_url
+			replies.push({
+				id: _id,
+				text: _text,
+				username: _username,
+				profile_image_url: _profile_image_url
+			})
+		}
+
+		if ("next_token" in resData.data.meta){
+			has_next = true
+		}
+
+		if (has_next) {
+			replies = replies.concat(await getTweets(conversation_id, "&next_token="+resData.data.meta.next_token))
+		}
+
+		console.log(replies)
+		return replies;
+	} catch (e) {
+		next(e)
 	}
-
-	if ("next_token" in resData.data.meta){
-		has_next = true
-	}
-
-	if (has_next) {
-		replies = replies.concat(await getTweets(conversation_id, "&next_token="+resData.data.meta.next_token))
-	}
-
-	console.log(replies)
-	return replies;
 }
 
 function chooseRandom(ids, number) {
