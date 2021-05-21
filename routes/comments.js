@@ -39,12 +39,14 @@ async function getTweets(conversation_id, next_token = "") {
 		headers: {"Authorization": `Bearer ${process.env.REACT_APP_BEARER_TOKEN}`}
 	}
 
-	resData = await axios.get(`https://api.twitter.com/2/tweets/search/recent?max_results=10${next_token}&query=conversation_id:${conversation_id}`, options)
+	resData = await axios.get(`https://api.twitter.com/2/tweets/search/recent?max_results=10&user.fields=username${next_token}&query=conversation_id:${conversation_id}`, options)
 	.then(response => response)
 	.catch(error => console.log(error))
 
 	for (var i = 0; i < resData.data.data.length; i++) {
-		replies.push(resData.data.data[i].id)
+		replies.push({
+			id: resData.data.data[i].id,
+			text: resData.data.data[i].text})
 	}
 
 	if ("next_token" in resData.data.meta){
@@ -55,6 +57,7 @@ async function getTweets(conversation_id, next_token = "") {
 		replies = replies.concat(await getTweets(conversation_id, "&next_token="+resData.data.meta.next_token))
 	}
 
+	console.log(replies)
 	return replies;
 }
 
@@ -68,6 +71,10 @@ function chooseRandom(ids, number) {
 	}
 
 	return winners
+}
+
+async function getUserName(userId) {
+	axios.get()
 }
 
 module.exports = router;
