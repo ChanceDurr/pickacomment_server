@@ -44,9 +44,16 @@ async function getTweets(conversation_id, next_token = "") {
 	.catch(error => console.log(error))
 
 	for (var i = 0; i < resData.data.data.length; i++) {
+		_id = resData.data.data[i].id
+		_text = resData.data.data[i].text
+		_username = resData.data.includes.users[i].username
+		_profile_image_url = res.data.includes.users[i].profile_image_url
 		replies.push({
-			id: resData.data.data[i].id,
-			text: resData.data.data[i].text})
+			id: _id,
+			text: _text,
+			username: _username,
+			profile_image_url = _profile_image_url
+		})
 	}
 
 	if ("next_token" in resData.data.meta){
@@ -71,10 +78,6 @@ function chooseRandom(ids, number) {
 	}
 
 	return winners
-}
-
-async function getUserName(userId) {
-	axios.get()
 }
 
 module.exports = router;
