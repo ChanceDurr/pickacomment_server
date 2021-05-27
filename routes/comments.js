@@ -45,10 +45,10 @@ async function getTweets(conversation_id, next_token = "") {
 		.catch(error => console.log(error))
 
 		for (var i = 0; i < resData.data.data.length; i++) {
-			_id = resData.data.data[i].id
-			_text = resData.data.data[i].text
-			_username = resData.data.includes.users[i].username
-			_profile_image_url = res.data.includes.users[i].profile_image_url
+			var _id = resData.data.data[i].id
+			var _text = resData.data.data[i].text
+			var _username = resData.data.includes.users[i].username
+			var _profile_image_url = res.data.includes.users[i].profile_image_url
 			replies.push({
 				id: _id,
 				text: _text,
@@ -68,6 +68,7 @@ async function getTweets(conversation_id, next_token = "") {
 		console.log(replies)
 		return replies;
 	} catch (e) {
+		console.log(e)
 		next(e)
 	}
 }
