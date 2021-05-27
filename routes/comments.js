@@ -26,6 +26,7 @@ router.post('/', async (req, res, next) => {
 		}
 		
 	} catch (e) {
+		console.log("Outer API", e)
 		next(e)
 	}
 
@@ -65,10 +66,9 @@ async function getTweets(conversation_id, next_token = "") {
 			replies = replies.concat(await getTweets(conversation_id, "&next_token="+resData.data.meta.next_token))
 		}
 
-		console.log(replies)
 		return replies;
 	} catch (e) {
-		console.log(e)
+		console.log("Inner API", e)
 		next(e)
 	}
 }
