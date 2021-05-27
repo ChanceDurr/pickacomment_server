@@ -48,7 +48,7 @@ async function getTweets(conversation_id, next_token = "") {
 			var _id = resData.data.data[i].id
 			var _text = resData.data.data[i].text
 			var _username = resData.data.includes.users[i].username
-			var _profile_image_url = res.data.includes.users[i].profile_image_url
+			var _profile_image_url = resData.data.includes.users[i].profile_image_url
 			replies.push({
 				id: _id,
 				text: _text,
