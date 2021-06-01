@@ -44,7 +44,7 @@ async function getTweets(conversation_id, next_token = "") {
 		resData = await axios.get(`https://api.twitter.com/2/tweets/search/recent?expansions=author_id&max_results=10&user.fields=username,profile_image_url${next_token}&query=conversation_id:${conversation_id}`, options)
 		.then(response => response)
 		.catch(error => console.log(error))
-
+		console.log(resData)
 		for (var i = 0; i < resData.data.data.length; i++) {
 			var _id = resData.data.data[i].id
 			var _text = resData.data.data[i].text
